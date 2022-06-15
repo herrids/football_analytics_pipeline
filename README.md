@@ -65,7 +65,7 @@ The data model of the data warehouse is rather a **Snowflake Schema** than a **S
 - `dim_matches` stores the match information
 - `dim_teams` stores the team name
 
-### Data Dictionary
+### Data Dictionaries
 
 `staging_matches`
 
@@ -84,139 +84,169 @@ The data model of the data warehouse is rather a **Snowflake Schema** than a **S
 
 `staging_events`
 
-| Field                | Type    | PK  | FK  |
-| -------------------- | ------- | --- | --- |
-| "event_id"           | varchar |
-| "period"             | int     |
-| "minute"             | int     |
-| "second"             | int     |
-| "possession"         | int     |
-| "type_id"            | int     |
-| "type_name"          | varchar |
-| "match_id"           | int     |
-| "possession_team_id" | int     |
-| "play_pattern"       | varchar |
-| "team_id"            | int     |
-| "player_name"        | varchar |
-| "location"           | varchar |
-| "duration"           | decimal |
-| "out"                | boolean |
+| Field              | Type    | PK  | FK  |
+| ------------------ | ------- | --- | --- |
+| event_id           | varchar |
+| period             | int     |
+| minute             | int     |
+| second             | int     |
+| possession         | int     |
+| type_id            | int     |
+| type_name          | varchar |
+| match_id           | int     |
+| possession_team_id | int     |
+| play_pattern       | varchar |
+| team_id            | int     |
+| player_name        | varchar |
+| location           | varchar |
+| duration           | decimal |
+| out                | boolean |
 
 `fact_events`
 
-| Field               | Type    | PK  | FK          |
-| ------------------- | ------- | --- | ----------- |
-| "event_id"          | varchar | yes |
-| "period"            | int     |
-| "minute"            | int     |
-| "second"            | int     |
-| "possession"        | int     |
-| "type_id"           | int     |     | dim_types   |
-| "match_id"          | int     |     | dim_matches |
-| "possesion_team_id" | int     |     | dim_teams   |
-| "play_pattern"      | varchar |
-| "team_id"           | int     |     | dim_teams   |
-| "player_id"         | int     |     | dim_players |
-| "location_x"        | decimal |
-| "location_y"        | decimal |
-| "duration"          | decimal |
-| "out"               | boolean |
+| Field             | Type    | PK  | FK          |
+| ----------------- | ------- | --- | ----------- |
+| event_id          | varchar | yes |
+| period            | int     |
+| minute            | int     |
+| second            | int     |
+| possession        | int     |
+| type_id           | int     |     | dim_types   |
+| match_id          | int     |     | dim_matches |
+| possesion_team_id | int     |     | dim_teams   |
+| play_pattern      | varchar |
+| team_id           | int     |     | dim_teams   |
+| player_id         | int     |     | dim_players |
+| location_x        | decimal |
+| location_y        | decimal |
+| duration          | decimal |
+| out               | boolean |
 
 `dim_matches`
 
-| Field            | Type     | PK  | FK        |
-| ---------------- | -------- | --- | --------- |
-| "match_id"       | int      | Yes |
-| "match_date"     | datetime |
-| "home_score"     | int      |
-| "away_score"     | int      |
-| "competition_id" | int      |
-| "season_id"      | int      |
-| "home_team_id"   | int      |     | dim_teams |
-| "away_team_id"   | int      |     | dim_teams |
+| Field          | Type     | PK  | FK        |
+| -------------- | -------- | --- | --------- |
+| match_id       | int      | Yes |
+| match_date     | datetime |
+| home_score     | int      |
+| away_score     | int      |
+| competition_id | int      |
+| season_id      | int      |
+| home_team_id   | int      |     | dim_teams |
+| away_team_id   | int      |     | dim_teams |
 
 `dim_teams`
 
-| Field       | Type    | PK  | FK  |
-| ----------- | ------- | --- | --- |
-| "team_id"   | int     | Yes |
-| "team_name" | varchar |
+| Field     | Type    | PK  | FK  |
+| --------- | ------- | --- | --- |
+| team_id   | int     | Yes |
+| team_name | varchar |
 
 `dim_types`
 
-| Field       | Type    | PK  | FK  |
-| ----------- | ------- | --- | --- |
-| "type_id"   | int     | Yes |
-| "type_name" | varchar |
+| Field     | Type    | PK  | FK  |
+| --------- | ------- | --- | --- |
+| type_id   | int     | Yes |
+| type_name | varchar |
 
 `dim_type_attributes`
 
-| Field            | Type    | PK  | FK        |
-| ---------------- | ------- | --- | --------- |
-| "attribute_name" | varchar | Yes |
-| "type_id"        | int     |     | dim_types |
+| Field          | Type    | PK  | FK        |
+| -------------- | ------- | --- | --------- |
+| attribute_name | varchar | Yes |
+| type_id        | int     |     | dim_types |
 
 `fact_event_attributes`
 
-| Field                | Type    | PK  | FK        |
-| -------------------- | ------- | --- | --------- |
-| "event_attribute_id" | int     | Yes |
-| "attribute_name"     | varchar |
-| "event_id"           | int     |     | dim_event |
-| "attribute_value"    | varchar |
+| Field              | Type    | PK  | FK        |
+| ------------------ | ------- | --- | --------- |
+| event_attribute_id | int     | Yes |
+| attribute_name     | varchar |
+| event_id           | int     |     | dim_event |
+| attribute_value    | varchar |
 
 `dim_players`
 
-| Field                         | Type    | PK  | FK  |
-| ----------------------------- | ------- | --- | --- |
-| "player_id"                   | int     | Yes |
-| "player_name"                 | varchar |
-| "nationality"                 | varchar |
-| "dob"                         | date    |
-| "player_positions"            | varchar |
-| "overall_rating"              | int     |
-| "potential"                   | int     |
-| "value"                       | decimal |
-| "wage"                        | decimal |
-| "work_rate"                   | varchar |
-| "weight"                      | int     |
-| "height"                      | int     |
-| "weak_foot"                   | int     |
-| "skill_moves"                 | int     |
-| "preferred_foot"              | varchar |
-| "shooting"                    | int     |
-| "power_strength"              | int     |
-| "power_stamina"               | int     |
-| "power_shot_power"            | int     |
-| "power_long_shots"            | int     |
-| "power_jumping"               | int     |
-| "physic"                      | int     |
-| "passing"                     | int     |
-| "pace"                        | int     |
-| "movement_sprint_speed"       | int     |
-| "movement_reactions"          | int     |
-| "movement_balance"            | int     |
-| "movement_agility"            | int     |
-| "movement_acceleration"       | int     |
-| "mentality_vision"            | int     |
-| "mentality_positioning"       | int     |
-| "mentality_penalties"         | int     |
-| "mentality_interceptions"     | int     |
-| "mentality_composure"         | int     |
-| "mentality_aggression"        | int     |
-| "goalkeeping_speed"           | int     |
-| "goalkeeping_reflexes"        | int     |
-| "goalkeeping_positioning"     | int     |
-| "goalkeeping_kicking"         | int     |
-| "goalkeeping_handling"        | int     |
-| "goalkeeping_diving"          | int     |
-| "dribbling"                   | int     |
-| "defending_standing_tackle"   | int     |
-| "defending_sliding_tackle"    | int     |
-| "defending_marking_awareness" | int     |
-| "defending"                   | int     |
-| "attacking_volleys"           | int     |
-| "attacking_short_passing"     | int     |
-| "attacking_heading_accuracy"  | int     |
-| "attacking_finishing"         | int     |
-| "attacking_crossing"          | int     |
+| Field                       | Type    | PK  | FK  |
+| --------------------------- | ------- | --- | --- |
+| player_id                   | int     | Yes |
+| player_name                 | varchar |
+| nationality                 | varchar |
+| dob                         | date    |
+| player_positions            | varchar |
+| overall_rating              | int     |
+| potential                   | int     |
+| value                       | decimal |
+| wage                        | decimal |
+| work_rate                   | varchar |
+| weight                      | int     |
+| height                      | int     |
+| weak_foot                   | int     |
+| skill_moves                 | int     |
+| preferred_foot              | varchar |
+| shooting                    | int     |
+| power_strength              | int     |
+| power_stamina               | int     |
+| power_shot_power            | int     |
+| power_long_shots            | int     |
+| power_jumping               | int     |
+| physic                      | int     |
+| passing                     | int     |
+| pace                        | int     |
+| movement_sprint_speed       | int     |
+| movement_reactions          | int     |
+| movement_balance            | int     |
+| movement_agility            | int     |
+| movement_acceleration       | int     |
+| mentality_vision            | int     |
+| mentality_positioning       | int     |
+| mentality_penalties         | int     |
+| mentality_interceptions     | int     |
+| mentality_composure         | int     |
+| mentality_aggression        | int     |
+| goalkeeping_speed           | int     |
+| goalkeeping_reflexes        | int     |
+| goalkeeping_positioning     | int     |
+| goalkeeping_kicking         | int     |
+| goalkeeping_handling        | int     |
+| goalkeeping_diving          | int     |
+| dribbling                   | int     |
+| defending_standing_tackle   | int     |
+| defending_sliding_tackle    | int     |
+| defending_marking_awareness | int     |
+| defending                   | int     |
+| attacking_volleys           | int     |
+| attacking_short_passing     | int     |
+| attacking_heading_accuracy  | int     |
+| attacking_finishing         | int     |
+| attacking_crossing          | int     |
+
+## Data Pipeline
+
+The data pipeline is implemented using **Apache Airflow**. We basically have 4 stages: create tables, stage data, transform plus load data and quality checks. The pipeline is set to run every day and load the match of this specific day. In case no match happened it skips all other tasks for this day
+
+![Data Model](public/data_pipeline.png)
+
+- `create_tables` makes sure that all tables listed above exist in the data warehouse
+- `stage_events` loads the events for the specific day into staging table
+- `stage_attributes` loads the attributes of the event for the specific day into fact table
+- `stage_matches` loads matches into staging table
+- `stage_players` loads all players into dimension table
+- `load_attributes_dim_table` loads attributes into dimension table
+- `load_types_dim_table` loads types into dimension table
+- `load_matches_dim_table` loads matches into dimension table
+- `load_events_fact_table` loads events into fact table
+- `load_teams_dim_table` loads teams into dimension table
+- `run_table_quality_checks` runs a given number of quality assuring queries on a given number of tables. Currently it checks if any table might be empty
+- `event_duplicates_quality_checks` checks if an event might be saved more than once in the fact table
+
+## Scenarios
+
+**The data was increased by 100x**
+This is a very likely case since we only look at the games of FC Barcelona. Looking at all games of all major leagues in europe would increase the data size easily 100x. In this case the exploration and data cleansing notebook might needs to run with Spark on a EMR cluster. Some of the fine tuning like looking at individual player names would be most likely not possible anymore. The Data Warehouse probably needs to grow vertically with additional nodes to run the queries during the data pipeline.
+
+**The pipelines would be run on a daily basis by 7 am every day.**
+This is what the pipeline is designed for and should work fine. The only challenge would be to make sure that match data from a couple of days ago are taken into account.
+
+**The database needed to be accessed by 100+ people**
+Depending on the load those 100+ people would but on the warehouse might need to be up scaling necessary.
