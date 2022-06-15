@@ -4,7 +4,7 @@
 
 ## Project Summary
 
-Goal is to provide information about how players perform during a match, the match outcome and players virtual stats so that those information can be used to analyze players and games in depth.
+The goal is to provide information about how players perform during a match, the match outcome and players virtual stats so that those information can be used to analyze players and games in depth.
 
 The project follows the follow steps:
 
@@ -18,9 +18,9 @@ The project follows the follow steps:
 
 This project works with several different datasets from two sources:
 
-Football Events: https://www.kaggle.com/datasets/saurabhshahane/statsbomb-football-data
-Fifa 22: https://www.kaggle.com/datasets/stefanoleone992/fifa-22-complete-player-dataset
-Statsbomb provides complete data for all FC Barcelona games of Lionel Messi from 2004 to 2020. The Fifa dataset has all players from Fifa 15 to Fifa 22. The scope of the project is therefore their overlap from August 2014 to June 2020.
+- Football Events: https://www.kaggle.com/datasets/saurabhshahane/statsbomb-football-data
+- Fifa 22: https://www.kaggle.com/datasets/stefanoleone992/fifa-22-complete-player-dataset
+  Statsbomb provides complete data for all FC Barcelona games of Lionel Messi from 2004 to 2020. The Fifa dataset has all players from Fifa 15 to Fifa 22. The scope of the project is therefore their overlap from August 2014 to June 2020.
 
 ### Files and directories
 
@@ -31,7 +31,7 @@ Of the event dataset we are interested in files saved under
 
 of the Fifa dataset we use the files:
 
-- players\_\*.csv
+- `players\_\*.csv`
 
 ### Storage
 
