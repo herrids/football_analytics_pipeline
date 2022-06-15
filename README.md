@@ -20,6 +20,7 @@ This project works with several different datasets from two sources:
 
 - Football Events: https://www.kaggle.com/datasets/saurabhshahane/statsbomb-football-data
 - Fifa 22: https://www.kaggle.com/datasets/stefanoleone992/fifa-22-complete-player-dataset
+
   Statsbomb provides complete data for all FC Barcelona games of Lionel Messi from 2004 to 2020. The Fifa dataset has all players from Fifa 15 to Fifa 22. The scope of the project is therefore their overlap from August 2014 to June 2020.
 
 ### Files and directories
