@@ -46,10 +46,10 @@ The scope is first to preprocess and clean the data using an iPython Notebook. W
 
 We use the same tools and concepts that were introduced during the nanodegree
 
-- **iPhython Notebook** with heavy **pandas** usage
-- **AWS S3** for file storage
-- **Apache Airflow** as data pipeline
-- **Amazon Redshift** as Data Warehouse
+- **iPhython Notebook** with heavy **pandas** usage. ipynb is a great way to explore data since you can run code and log the output. You get a good idea of the data you are dealing with without the need to search log files. You can also use it to present it to other stakeholders. For bigger dataset notebooks can also be run in a EMR cluster. For this pandas should be substituded with pyspark.
+- **AWS S3** for file storage. S3 is well suited for files of each size and format. It has unlimited scalability, very high durability and very little overhead compared to a solution like HDFS. It can be used as decoupled file system to optimize data processing workflows. It also fullfills the purpose of a data lake holding the cleaned data and can be used for different jobs where a Data Warehouse is not necessary like for example training a machine learning model.
+- **Apache Airflow** as data pipeline. Airflow is a free open source tool with a large community providing us with "out of the box" hooks, operators and sensors. Since we partion our data by day its easy to schedule and automate the data processing. Airflow is also highly flexible to adjust the pipeline ffor additional requirements.
+- **Amazon Redshift** as Data Warehouse. The distributed architecture of Redshift allows very fast querying in parallel with the same easy integration as any other PostgreSQL database. When the amount of data grows its easy to horizontally scale the infrastructure without the need of maintaining the servers.
 
 ## Data Model
 
@@ -102,6 +102,62 @@ The data model of the data warehouse is rather a **Snowflake Schema** than a **S
 | location           | varchar |
 | duration           | decimal |
 | out                | boolean |
+
+`staging_players`
+
+| Field                       | Type    | PK  | FK  |
+| --------------------------- | ------- | --- | --- |
+| player_id                   | int     | Yes |
+| player_name                 | varchar |
+| nationality                 | varchar |
+| dob                         | date    |
+| player_positions            | varchar |
+| overall_rating              | int     |
+| potential                   | int     |
+| value                       | decimal |
+| wage                        | decimal |
+| work_rate                   | varchar |
+| weight                      | int     |
+| height                      | int     |
+| weak_foot                   | int     |
+| skill_moves                 | int     |
+| preferred_foot              | varchar |
+| shooting                    | int     |
+| power_strength              | int     |
+| power_stamina               | int     |
+| power_shot_power            | int     |
+| power_long_shots            | int     |
+| power_jumping               | int     |
+| physic                      | int     |
+| passing                     | int     |
+| pace                        | int     |
+| movement_sprint_speed       | int     |
+| movement_reactions          | int     |
+| movement_balance            | int     |
+| movement_agility            | int     |
+| movement_acceleration       | int     |
+| mentality_vision            | int     |
+| mentality_positioning       | int     |
+| mentality_penalties         | int     |
+| mentality_interceptions     | int     |
+| mentality_composure         | int     |
+| mentality_aggression        | int     |
+| goalkeeping_speed           | int     |
+| goalkeeping_reflexes        | int     |
+| goalkeeping_positioning     | int     |
+| goalkeeping_kicking         | int     |
+| goalkeeping_handling        | int     |
+| goalkeeping_diving          | int     |
+| dribbling                   | int     |
+| defending_standing_tackle   | int     |
+| defending_sliding_tackle    | int     |
+| defending_marking_awareness | int     |
+| defending                   | int     |
+| attacking_volleys           | int     |
+| attacking_short_passing     | int     |
+| attacking_heading_accuracy  | int     |
+| attacking_finishing         | int     |
+| attacking_crossing          | int     |
 
 `fact_events`
 
@@ -168,10 +224,11 @@ The data model of the data warehouse is rather a **Snowflake Schema** than a **S
 
 `dim_players`
 
-| Field                       | Type    | PK  | FK  |
-| --------------------------- | ------- | --- | --- |
+| Field                       | Type    | PK  | FK       |
+| --------------------------- | ------- | --- | -------- |
 | player_id                   | int     | Yes |
 | player_name                 | varchar |
+| team_id                     | varchar       | dim_team |
 | nationality                 | varchar |
 | dob                         | date    |
 | player_positions            | varchar |
@@ -240,6 +297,15 @@ The data pipeline is implemented using **Apache Airflow**. We basically have 4 s
 - `load_teams_dim_table` loads teams into dimension table
 - `run_table_quality_checks` runs a given number of quality assuring queries on a given number of tables. Currently it checks if any table might be empty
 - `event_duplicates_quality_checks` checks if an event might be saved more than once in the fact table
+
+### Airflow Calendar
+![Calendar](public/airflow_calendar.png)
+
+### Airflow Duration
+![Duration](public/airflow_duration.png)
+
+### Airflow Grid
+![Grid](public/airflow_grid.png)
 
 ## Scenarios
 
