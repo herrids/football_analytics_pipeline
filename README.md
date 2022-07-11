@@ -47,8 +47,8 @@ The scope is first to preprocess and clean the data using an iPython Notebook. W
 We use the same tools and concepts that were introduced during the nanodegree
 
 - **iPhython Notebook** with heavy **pandas** usage. ipynb is a great way to explore data since you can run code and log the output. You get a good idea of the data you are dealing with without the need to search log files. You can also use it to present it to other stakeholders. For bigger dataset notebooks can also be run in a EMR cluster. For this pandas should be substituded with pyspark.
-- **AWS S3** for file storage. S3 is well suited for files of each size and format. It has unlimited scalability, very high durability and very little overhead compared to a solution like HDFS. It can be used as decoupled file system to optimize data processing workflows. It also fullfills the purpose of a data lake holding the cleaned data and can be used for different jobs where a Data Warehouse is not necessary like for example training a machine learning model.
-- **Apache Airflow** as data pipeline. Airflow is a free open source tool with a large community providing us with "out of the box" hooks, operators and sensors. Since we partion our data by day its easy to schedule and automate the data processing. Airflow is also highly flexible to adjust the pipeline ffor additional requirements.
+- **AWS S3** for file storage. S3 is well suited for files of each size and format. It has unlimited scalability, very high durability and very little overhead compared to a solution like HDFS. It can be used as decoupled file system to optimize data processing workflows. It also fullfills the purpose of a data lake holding the cleaned data and can be used for different jobs like for example training a machine learning model where a Data Warehouse is not necessary.
+- **Apache Airflow** as data pipeline. Airflow is a free open source tool with a large community providing us with "out of the box" hooks, operators and sensors. Since we partion our data by day its easy to schedule and automate the data processing. Airflow is also highly flexible to adjust the pipeline for additional requirements.
 - **Amazon Redshift** as Data Warehouse. The distributed architecture of Redshift allows very fast querying in parallel with the same easy integration as any other PostgreSQL database. When the amount of data grows its easy to horizontally scale the infrastructure without the need of maintaining the servers.
 
 ## Data Model
@@ -316,4 +316,8 @@ This is a very likely case since we only look at the games of FC Barcelona. Look
 This is what the pipeline is designed for and should work fine. The only challenge would be to make sure that match data from a couple of days ago are taken into account.
 
 **The database needed to be accessed by 100+ people**
-Depending on the load those 100+ people would but on the warehouse might need to be up scaling necessary.
+Since we are using Amazon Redshift we can carefully manage users and access rights through AWS IAM. The load is then managed by AWS. If many users are using the same queries we can consider saving aggregated data in an additional OLAP cube to increae performance and accessibility.
+
+## Sample Queries
+
+The Notebook `data_analysis.ipynb` contains various queries to the Data Warehouse showcasing examples of possible Data Analysis.

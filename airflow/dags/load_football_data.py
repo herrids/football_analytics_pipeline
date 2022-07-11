@@ -51,6 +51,7 @@ stage_attributes_to_redshift = StageToRedshiftOperator(
     s3_key="attribute_events/attribute_events_{ds}",
     s3_bucket="capstone-football",
     table="fact_event_attributes",
+    append=True
 )
 
 stage_matches_to_redshift = StageToRedshiftOperator(
@@ -71,7 +72,16 @@ stage_players_to_redshift = StageToRedshiftOperator(
     redshift_conn_id="redshift",
     s3_key="players",
     s3_bucket="capstone-football",
+    table="staging_players",
+    append=False
+)
+
+load_players_table = LoadDimensionOperator(
+    task_id='Load_players_dim_table',
+    dag=dag,
+    redshift_conn_id="redshift",
     table="dim_players",
+    query=SqlQueries.player_table_insert,
     append=False
 )
 
@@ -149,13 +159,18 @@ data_quality_tasks = [run_quality_checks, check_event_duplicates]
 
 start_operator >> create_tables_task
 create_tables_task >> stage_events_to_redshift
-stage_events_to_redshift >> [stage_matches_to_redshift,
-                             stage_players_to_redshift,
-                             stage_attributes_to_redshift]
-stage_players_to_redshift >> load_events_table
+create_tables_task >> stage_players_to_redshift
+stage_events_to_redshift >> [
+    stage_matches_to_redshift, 
+    stage_attributes_to_redshift, 
+    stage_players_to_redshift]
+stage_players_to_redshift >> load_players_table
+load_teams_table >> load_players_table
+load_players_table >> load_events_table
 stage_attributes_to_redshift >> [load_attributes_table, load_types_table]
-stage_matches_to_redshift >> [load_matches_table,
-                              load_teams_table, load_events_table]
+stage_matches_to_redshift >> [load_matches_table,load_teams_table]
+load_matches_table >> load_events_table
+load_players_table >> data_quality_tasks
 load_events_table >> data_quality_tasks
 load_types_table >> data_quality_tasks
 load_attributes_table >> data_quality_tasks
