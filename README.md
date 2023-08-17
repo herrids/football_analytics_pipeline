@@ -1,7 +1,5 @@
 # Football Player Statistics Pipeline
 
-### Udacity Nanodegree Data Engineering Capstone Project
-
 ## Project Summary
 
 The goal is to provide information about how players perform during a match, the match outcome and players virtual stats so that those information can be used to analyze players and games in depth.
