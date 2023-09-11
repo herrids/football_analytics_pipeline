@@ -4,7 +4,7 @@
 
 The goal is to provide information about how players perform during a match, the match outcome and players virtual stats so that those information can be used to analyze players and games in depth.
 
-The project follows the follow steps:
+The project follows the these steps:
 
 - Step 1: Scope the Project and Gather Data
 - Step 2: Explore and Assess the Data
