@@ -8,7 +8,7 @@ from operators import (StageToRedshiftOperator, LoadFactOperator,
 from helpers import SqlQueries
 
 default_args = {
-    'owner': 'udacity',
+    'owner': 'ferdihoske',
     'depends_on_past': False,
     'start_date': datetime(2014, 8, 24),
     'end_date': datetime(2021, 6, 30),
