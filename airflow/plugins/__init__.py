@@ -6,8 +6,8 @@ import operators
 import helpers
 
 # Defining the plugin class
-class UdacityPlugin(AirflowPlugin):
-    name = "udacity_plugin"
+class FootballPlugin(AirflowPlugin):
+    name = "football_plugin"
     operators = [
         operators.StageToRedshiftOperator,
         operators.LoadFactOperator,
